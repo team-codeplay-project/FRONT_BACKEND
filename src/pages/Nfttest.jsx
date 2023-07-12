@@ -1,7 +1,7 @@
-import React, { useContext, useState } from "react";
-import { AppContext } from "../App";
-import "../style/rafflebox.css";
-import axios from "axios";
+import React, { useContext, useState } from 'react';
+import { AppContext } from '../App';
+import '../style/rafflebox.css';
+import axios from 'axios';
 
 const Nfttest = () => {
   const [buyId, setBuyId] = useState();
@@ -13,26 +13,26 @@ const Nfttest = () => {
     e.preventDefault();
 
     try {
-      // console.log( account ) ;
+      // console.log(account.address);
 
       if (!account) return;
-      let day = 230711;
+      let day = 230715;
       await nft_c.methods.buy_ticket(day, buyId).send({
-        from: account,
-        value: web3.utils.toWei("0.0001", "ether"),
+        from: account.address,
+        value: web3.utils.toWei('0.0001', 'ether'),
       });
 
-      // console.log( 'nft mint' ) ;
+      // console.log('nft mint');
       const response = await axios.post(
         `${process.env.REACT_APP_BACKEND_URL}/nft/`,
         {
           day,
           type: Number(buyId),
-          owner: account,
+          owner: account.address,
         },
         {
           headers: {
-            "ngrok-skip-browser-warning": "any",
+            'ngrok-skip-browser-warning': 'any',
           },
         }
       );
@@ -52,21 +52,21 @@ const Nfttest = () => {
       if (!account) return;
       let day = 230711;
       await nft_c.methods.use(day, useId).send({
-        from: account,
+        from: account.address,
       });
 
-      console.log("use!");
+      console.log('use!');
 
       await axios.put(
         `${process.env.REACT_APP_BACKEND_URL}/nft/done`,
         {
           day,
           type: Number(useId),
-          owner: account,
+          owner: account.address,
         },
         {
           headers: {
-            "ngrok-skip-browser-warning": "any",
+            'ngrok-skip-browser-warning': 'any',
           },
         }
       );
@@ -84,7 +84,7 @@ const Nfttest = () => {
       if (!account) return;
       let day = 230711;
       const response = await nft_c.methods.refund(day, reId).send({
-        from: account,
+        from: account.address,
       });
 
       console.log(day, reId);
@@ -95,17 +95,17 @@ const Nfttest = () => {
           data: {
             day,
             type: Number(reId),
-            owner: account,
+            owner: account.address,
           },
         },
         {
           headers: {
-            "ngrok-skip-browser-warning": "any",
+            'ngrok-skip-browser-warning': 'any',
           },
         }
       );
 
-      console.log("delete end!");
+      console.log('delete end!');
     } catch (error) {
       console.error(error);
     }
@@ -119,7 +119,8 @@ const Nfttest = () => {
             className="text-black"
             type="text"
             value={buyId}
-            onChange={(e) => setBuyId(e.target.value)}></input>
+            onChange={(e) => setBuyId(e.target.value)}
+          ></input>
           <input type="submit" value="민팅" />
         </form>
         <form onSubmit={useticket}>
@@ -127,7 +128,8 @@ const Nfttest = () => {
             className="text-black"
             type="text"
             value={useId}
-            onChange={(e) => setUseId(e.target.value)}></input>
+            onChange={(e) => setUseId(e.target.value)}
+          ></input>
           <input type="submit" value="사용" />
         </form>
         <form onSubmit={refundticket}>
@@ -135,7 +137,8 @@ const Nfttest = () => {
             className="text-black"
             type="text"
             value={reId}
-            onChange={(e) => setReId(e.target.value)}></input>
+            onChange={(e) => setReId(e.target.value)}
+          ></input>
           <input type="submit" value="환불" />
         </form>
       </div>

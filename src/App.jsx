@@ -9,12 +9,12 @@ import EventPage from './pages/Event';
 import Homepage from './pages/Home';
 // import ReactPlayer from "react-player";
 import Mypage from './pages/Mypage';
-import Ticket from './pages/Ticket';
 import Nfttest from './pages/Nfttest';
 import AdminPage from './pages/admin';
 import { n_abi, n_addr, t_abi, t_addr } from './raffletest.config';
 import Web3 from 'web3';
 import LoginPage from './pages/login';
+import TicketBooking from './pages/Ticket2';
 
 export const AppContext = createContext();
 
@@ -70,7 +70,7 @@ function App() {
           <Header />
           <Routes>
             <Route exact path="/" element={<Homepage />} />
-            <Route path="/Ticket" element={<Ticket />} />
+            <Route path="/Ticket" element={<TicketBooking />} />
             <Route path="/Event" element={<EventPage />} />
             <Route path="/Mypage" element={<Mypage />} />
             <Route path="/LoginPage" element={<LoginPage />} />
