@@ -43,11 +43,11 @@ const LoginPage = ({ handleLogin }) => {
       setLoggedIn(true);
     } catch (error) {
       console.error(error);
-      // 여기도 팝업 ex: 이미 존재하는 전화번호입니다.
+      // 여기도 팝업 ex: 이미 존재하는 전화번호a입니다.
     }
   };
 
-  if (loggedIn) {
+  if (true) {
     // Render the new page after successful login
     return (
       <div>

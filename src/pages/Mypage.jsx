@@ -1,12 +1,42 @@
-import React, { useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import "../style/mypage.css";
+import Nftcardlist from "../components/nftcardlist";
+import { AppContext } from "../App";
+import axios from "axios";
 
 const Mypage = () => {
+  
   const [activeTab, setActiveTab] = useState(1);
+  const { account , getbalance } = useContext(AppContext);
+  const [ data , setData ] = useState() ;
 
   const handleTabClick = (tabIndex) => {
     setActiveTab(tabIndex);
   };
+
+  const get_nft_data = async() => {
+
+    try {
+
+      // console.log( `${process.env.REACT_APP_BACKEND_URL}/nft/${account.address}`) ;
+      const response = await axios.get(
+        `${process.env.REACT_APP_BACKEND_URL}/nft/${account.address}`,
+        {
+          headers: {
+            "ngrok-skip-browser-warning": "any",
+          },
+        }
+      );
+
+      // console.log(response.data) ;
+      setData(response.data) ;
+      
+    } catch (error) {
+      console.error(error);
+    }
+  }
+
+  useEffect( () => {get_nft_data()} ,[] ) ;
 
   return (
     <>
@@ -34,52 +64,18 @@ const Mypage = () => {
         <div className="card-container">
           <div className="card">
             <div className="card-content">
-              {activeTab === 1 && (
+            
+              {activeTab !== 3 && (
                 <div>
                   <div className="nft-list">
-                    <div className="nft-item">
-                      <img src="nft1.png" alt="NFT 1" />
-                      <div className="nft-overlay">
-                        <span>경기 1</span>
-                      </div>
-                    </div>
-                    <div className="nft-item">
-                      <img src="nft2.png" alt="NFT 2" />
-                      <div className="nft-overlay">
-                        <span>경기 2</span>
-                      </div>
-                    </div>
-                    <div className="nft-item">
-                      <img src="nft3.png" alt="NFT 3" />
-                      <div className="nft-overlay">
-                        <span>경기 3</span>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              )}
-              {activeTab === 2 && (
-                <div>
-                  <div className="nft-list">
-                    <div className="nft-item">
-                      <img src="nft4.png" alt="NFT 4" />
-                      <div className="nft-overlay">
-                        <span>경기 4</span>
-                      </div>
-                    </div>
-                    <div className="nft-item">
-                      <img src="nft5.png" alt="NFT 5" />
-                      <div className="nft-overlay">
-                        <span>경기 5</span>
-                      </div>
-                    </div>
-                    <div className="nft-item">
-                      <img src="nft6.png" alt="NFT 6" />
-                      <div className="nft-overlay">
-                        <span>경기 6</span>
-                      </div>
-                    </div>
-                  </div>
+                   { data?.map( (v,i) =>{ 
+                    if( ( activeTab === 1 && v.isUsed === false ) || ( activeTab === 2 && v.isUsed === true ) ){
+                   return ( <Nftcardlist key = { i } data={v} /> ) ;
+                  }
+                  return null ;
+                   })
+                   }
+                 </div>
                 </div>
               )}
               {activeTab === 3 && (
