@@ -1,61 +1,55 @@
-import React, { useContext, useEffect, useState } from "react";
-import "../style/login.css";
-import axios from "axios";
-import { AppContext } from "../App";
+import React, { useContext, useState } from 'react';
+import '../style/login.css';
+import axios from 'axios';
+import { AppContext } from '../App';
+import { useNavigate } from 'react-router-dom';
 
 const LoginPage = ({ handleLogin }) => {
-  const [nickname, setNickname] = useState("");
-  const [phone, setPhone] = useState("");
-  const { account, setLoggedIn } = useContext(AppContext); // Assuming you have a setLoggedIn function in your context
+  const [nickname, setNickname] = useState('');
+  const [phone, setPhone] = useState('');
+  const [isLoading, setIsLoading] = useState(false);
+  const { temp } = useContext(AppContext);
+  const navigate = useNavigate();
 
   const Userinsert = async (e) => {
     e.preventDefault();
 
     try {
-      if (!account || !phone || !nickname) {
-        console.log("plus input");
+      if (!temp || !phone || !nickname) {
+        console.log('plus input');
         // 입력이 필요합니다 팝업 or 안내문
         return;
       }
 
       if (isNaN(phone)) {
-        console.log("전화번호는 숫자여야함");
+        console.log('전화번호는 숫자여야함');
         return;
       }
+
+      setIsLoading(true);
 
       await axios.post(
         `${process.env.REACT_APP_BACKEND_URL}/user/`,
         {
           phone_number: phone,
-          address: account,
+          address: temp,
           name: nickname,
         },
         {
           headers: {
-            "ngrok-skip-browser-warning": "any",
+            'ngrok-skip-browser-warning': 'any',
           },
         }
       );
 
-      console.log("create user");
+      setIsLoading(false);
 
-      // Update the login state
-      setLoggedIn(true);
+      navigate('/');
     } catch (error) {
       console.error(error);
-      // 여기도 팝업 ex: 이미 존재하는 전화번호a입니다.
+      setIsLoading(false);
     }
   };
-
-  if (true) {
-    // Render the new page after successful login
-    return (
-      <div>
-        <h1>Welcome to the new page!</h1>
-        {/* Add your content here */}
-      </div>
-    );
-  }
 
   return (
     <div className="login-container">
@@ -75,7 +69,11 @@ const LoginPage = ({ handleLogin }) => {
           onChange={(e) => setPhone(e.target.value)}
           className="input-field"
         />
-        <input type="submit" value="회원 가입" />
+        {isLoading ? (
+          <div>Loading</div>
+        ) : (
+          <input type="submit" value="회원 가입" />
+        )}
       </form>
     </div>
   );

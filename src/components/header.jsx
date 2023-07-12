@@ -1,40 +1,41 @@
-import React, { useContext, useEffect, useState } from "react";
-import { FiMenu } from "react-icons/fi";
-import {
-  MdOutlineAddCard,
-  MdCreditCard,
-  MdOutlineArrowForwardIos,
-} from "react-icons/md";
-import { CgCloseR } from "react-icons/cg";
-import { GrClose } from "react-icons/gr";
-import { Link } from "react-router-dom";
-import { AppContext } from "../App";
-import axios from "axios";
+import React, { useContext, useEffect, useState } from 'react';
+import { FiMenu } from 'react-icons/fi';
+import { MdOutlineAddCard, MdCreditCard } from 'react-icons/md';
+import { CgCloseR } from 'react-icons/cg';
+import { GrClose } from 'react-icons/gr';
+import { useNavigate } from 'react-router-dom';
+import { AppContext } from '../App';
+import axios from 'axios';
 
 const Header = () => {
-  const { account, setAccount, mynft, mytoken, getbalance } =
+  const { setTemp, account, setAccount, mynft, mytoken, getbalance } =
     useContext(AppContext);
 
   const [isMenuOpen, setIsMenuOpen] = useState(false);
-  const [loggedInUser, setLoggedInUser] = useState(null);
-  const [searchValue, setSearchValue] = useState("");
+  const [searchValue, setSearchValue] = useState('');
+  const navigate = useNavigate();
 
   const connect = async () => {
     try {
       const accounts = await window.ethereum.request({
-        method: "eth_requestAccounts",
+        method: 'eth_requestAccounts',
       });
 
       // await
-      const user = await axios.get(
+      const response = await axios.get(
         `${process.env.REACT_APP_BACKEND_URL}/user/${accounts[0]}`,
         {
           headers: {
-            "ngrok-skip-browser-warning": "any",
+            'ngrok-skip-browser-warning': 'any',
           },
         }
       );
-      setAccount(user.data.user);
+
+      if (!response.data.ok) {
+        setTemp(accounts[0]);
+        navigate('/loginpage');
+      }
+      setAccount(response.data.user);
       chkchainID();
     } catch (error) {
       console.error(error);
@@ -58,16 +59,16 @@ const Header = () => {
   const chkchainID = async () => {
     try {
       const id = await window.ethereum.request({
-        method: "eth_chainId",
+        method: 'eth_chainId',
         params: [],
       });
 
       if (id !== 0x5) {
         await window.ethereum.request({
-          method: "wallet_switchEthereumChain",
+          method: 'wallet_switchEthereumChain',
           params: [
             {
-              chainId: "0x5",
+              chainId: '0x5',
             },
           ],
         });
@@ -86,14 +87,14 @@ const Header = () => {
   };
 
   const clearSearchInput = () => {
-    setSearchValue("");
+    setSearchValue('');
   };
 
   return (
-    <header className={`header ${isMenuOpen ? "menu-open" : ""}`}>
+    <header className={`header ${isMenuOpen ? 'menu-open' : ''}`}>
       <div className="header-menu">
         <FiMenu
-          className={`header-icon ${isMenuOpen ? "active" : ""}`}
+          className={`header-icon ${isMenuOpen ? 'active' : ''}`}
           size={28}
           strokeWidth={2}
           onClick={toggleMenu}
@@ -124,7 +125,7 @@ const Header = () => {
               size={40}
               color="#007aff"
               onClick={disconnect}
-              style={{ marginTop: "2.5px" }}
+              style={{ marginTop: '2.5px' }}
             />
           </div>
         ) : (
@@ -136,16 +137,17 @@ const Header = () => {
             />
           </div>
         )}
-        <div className={`side-menu ${isMenuOpen ? "open" : ""}`}>
+        <div className={`side-menu ${isMenuOpen ? 'open' : ''}`}>
           <GrClose className="close-icon2" size={20} onClick={toggleMenu} />
           {account ? (
             <div>
               <span
                 className="welcome-message"
                 style={{
-                  fontSize: "24px",
-                  fontWeight: "bold",
-                }}>
+                  fontSize: '24px',
+                  fontWeight: 'bold',
+                }}
+              >
                 {`${account.name} 님`}
               </span>
               <ul className="menu-items">

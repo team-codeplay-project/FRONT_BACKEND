@@ -1,22 +1,21 @@
-import axios from "axios";
-import "../style/admin.css";
-import { useContext, useEffect, useState } from "react";
-import { AppContext } from "../App";
+import axios from 'axios';
+import '../style/admin.css';
+import { useContext, useEffect, useState } from 'react';
+import { AppContext } from '../App';
 
 const chk = {};
 let a_idx,
   max = -1;
 const AdminPage = ({ admin }) => {
-  
   const [activeTab, setActiveTab] = useState(1);
   const [data, setData] = useState();
   const [Goods_url, setUrl] = useState();
-  const [Goods_name, setName] = useState("상품 이름");
+  const [Goods_name, setName] = useState('상품 이름');
   const [winner, setWinner] = useState([]);
   const [n, setN] = useState();
   const [E, setE] = useState();
   const { token_c, web3, account } = useContext(AppContext);
-  
+
   const [isLoading, setIsLoading] = useState(false);
 
   const handleTabClick = (tabIndex) => {
@@ -30,9 +29,9 @@ const AdminPage = ({ admin }) => {
       let ARdata;
 
       if (activeTab === 1) {
-        ARdata = "raffle";
+        ARdata = 'raffle';
       } else {
-        ARdata = "auction";
+        ARdata = 'auction';
       }
 
       let start_block = await web3.eth.getBlockNumber();
@@ -47,12 +46,10 @@ const AdminPage = ({ admin }) => {
         },
         {
           headers: {
-            "ngrok-skip-browser-warning": "any",
+            'ngrok-skip-browser-warning': 'any',
           },
         }
       );
-
-      console.log("create", e);
 
       get_Data();
     } catch (error) {
@@ -70,7 +67,7 @@ const AdminPage = ({ admin }) => {
         `${process.env.REACT_APP_BACKEND_URL}/auction/${key}`,
         {
           headers: {
-            "ngrok-skip-browser-warning": "any",
+            'ngrok-skip-browser-warning': 'any',
           },
         }
       );
@@ -78,7 +75,7 @@ const AdminPage = ({ admin }) => {
       const f_B = response.data.start_block; // fromBlock : 은 디비에서
       const e_B = end_block;
 
-      const a = await token_c.getPastEvents("auction", {
+      const a = await token_c.getPastEvents('auction', {
         filter: { _idx: key },
         fromBlock: f_B,
         toBlock: e_B,
@@ -103,7 +100,7 @@ const AdminPage = ({ admin }) => {
         `${process.env.REACT_APP_BACKEND_URL}/Auction/${key}`,
         {
           headers: {
-            "ngrok-skip-browser-warning": "any",
+            'ngrok-skip-browser-warning': 'any',
           },
         }
       );
@@ -111,7 +108,7 @@ const AdminPage = ({ admin }) => {
       const f_B = response.data.start_block; // fromBlock : 은 디비에서
       const e_B = end_block;
 
-      const a = await token_c.getPastEvents("Auction", {
+      const a = await token_c.getPastEvents('Auction', {
         filter: { _idx: key },
         fromBlock: f_B,
         toBlock: e_B,
@@ -144,14 +141,14 @@ const AdminPage = ({ admin }) => {
       },
       {
         headers: {
-          "ngrok-skip-browser-warning": "any",
+          'ngrok-skip-browser-warning': 'any',
         },
       }
     );
 
     // console.log(winner) ;
     // console.log( idx , winner[idx]) ;
-    console.log("Raffle_", n, " is End");
+    console.log('Raffle_', n, ' is End');
   };
 
   useEffect(() => {
@@ -176,15 +173,15 @@ const AdminPage = ({ admin }) => {
       setIsLoading(true);
 
       if (activeTab === 1) {
-        ARdata = "raffle";
+        ARdata = 'raffle';
       } else {
-        ARdata = "auction";
+        ARdata = 'auction';
       }
       const response = await axios.get(
         `${process.env.REACT_APP_BACKEND_URL}/${ARdata}`,
         {
           headers: {
-            "ngrok-skip-browser-warning": "any",
+            'ngrok-skip-browser-warning': 'any',
           },
         }
       );
@@ -313,21 +310,24 @@ const AdminPage = ({ admin }) => {
     <>
       <div className="tab4-container shadow-md">
         <button
-          className={`tab ${activeTab === 1 ? "active" : ""}`}
+          className={`tab ${activeTab === 1 ? 'active' : ''}`}
           onClick={() => handleTabClick(1)}
-          role="tab">
+          role="tab"
+        >
           래플 탭
         </button>
         <button
-          className={`tab ${activeTab === 2 ? "active" : ""}`}
+          className={`tab ${activeTab === 2 ? 'active' : ''}`}
           onClick={() => handleTabClick(2)}
-          role="tab">
+          role="tab"
+        >
           옥션 탭
         </button>
         <button
-          className={`tab ${activeTab === 3 ? "active" : ""}`}
+          className={`tab ${activeTab === 3 ? 'active' : ''}`}
           onClick={() => handleTabClick(3)}
-          role="tab">
+          role="tab"
+        >
           가격, 출금
         </button>
       </div>
