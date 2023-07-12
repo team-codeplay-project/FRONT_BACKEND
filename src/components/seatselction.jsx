@@ -1,50 +1,8 @@
-import React, { useState } from "react";
-import "../style/seatselect.css";
+import React from "react";
 
-const SelectedSeatsCard = ({ seats, onConfirm }) => {
-  return (
-    <div className="selected-seats-card">
-      <div className="selected-seats">
-        <h2>선택한 좌석</h2>
-        <ul>
-          {seats.map((seat) => (
-            <li key={seat}>{seat}</li>
-          ))}
-        </ul>
-        <button onClick={onConfirm}>선택</button>
-      </div>
-    </div>
-  );
-};
-
-const SeatSelectionPage = () => {
-  const [selectedSeats, setSelectedSeats] = useState([]);
-  const [ticketQuantity, setTicketQuantity] = useState(1);
-
+const SeatSelection = ({ onSeatSelection, selectedSeats }) => {
   const handleSeatSelection = (row, seat) => {
-    const seatKey = `${row}-${seat}`;
-    const isSelected = selectedSeats.includes(seatKey);
-
-    if (isSelected) {
-      const updatedSeats = selectedSeats.filter((seat) => seat !== seatKey);
-      setSelectedSeats(updatedSeats);
-    } else {
-      const updatedSeats = [...selectedSeats, seatKey];
-      setSelectedSeats(updatedSeats);
-    }
-
-    setTicketQuantity(selectedSeats.length + (isSelected ? -1 : 1));
-  };
-
-  const handleConfirmBooking = () => {
-    console.log("Selected Seats:", selectedSeats);
-    console.log("Ticket Quantity:", ticketQuantity);
-    // 예매 확인 처리 함수
-    // 선택된 좌석 및 티켓 수량 전송
-  };
-
-  const handleTicketQuantityChange = (event) => {
-    setTicketQuantity(parseInt(event.target.value));
+    onSeatSelection(row, seat);
   };
 
   const renderSeatMap = () => {
@@ -85,32 +43,12 @@ const SeatSelectionPage = () => {
   };
 
   return (
-    <div className="combine-card">
-      <div className="seat-selection-page">
-        <div className="seat-container">
-          <h2>테이블석</h2>
-          <div className="seat-map">{renderSeatMap()}</div>
-        </div>
-        <div className="booking-container">
-          <div className="ticket-quantity">
-            <h2>티켓 수량</h2>
-            <input
-              type="number"
-              min="1"
-              value={ticketQuantity}
-              onChange={handleTicketQuantityChange}
-            />
-          </div>
-          {selectedSeats.length > 0 && (
-            <SelectedSeatsCard
-              seats={selectedSeats}
-              onConfirm={handleConfirmBooking}
-            />
-          )}
-        </div>
+    <div className="seat-selection-container">
+      <div className="seat-container">
+        <div className="seat-map">{renderSeatMap()}</div>
       </div>
     </div>
   );
 };
 
-export default SeatSelectionPage;
+export default SeatSelection;
