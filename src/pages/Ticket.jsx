@@ -10,8 +10,10 @@ import { AppContext } from "../App";
 const SeatSelectionContainer = ({ onConfirm }) => {
   const [blocks, setblocks] = useState([]);
   const [ticketQuantity, setTicketQuantity] = useState(1);
-  const { token_c, web3, account , game , setgame , type , settype , block , setblock } = useContext(AppContext);
+  const { nft_c , web3, account , game , setgame , type , settype , block , setblock } = useContext(AppContext);
   const [seat , setSeat] = useState();
+  const [isLoading , setIsLoading ] = useState( false ) ;
+  const [ re , setRe ] = useState() ;
   const db = [[
     { row: 1, seats: 10 , sum : 0 },
     { row: 2, seats: 11 , sum : 10 },
@@ -26,6 +28,35 @@ const SeatSelectionContainer = ({ onConfirm }) => {
       { row: 3, seats: 5 , sum : 13 },
       { row: 4, seats: 12 , sum : 25 }],
   ];
+
+  const get_nft_data = async() => {
+
+    //seat_info( uint _day , uint _block , uint _endidx )
+    try {
+
+      setIsLoading( true ) ;
+
+      const day = 230715 ;
+      if( game == 2 ) day = 230716 ;
+
+      const tblock = type * 1000 + block ;
+      const edidx = Number( db[ type - 1 ][ 3 ].sum ) + Number( db[ type - 1 ][ 3 ].seats ) ;
+      const response = await nft_c.methods.seat_info( day , tblock , edidx ).call() ;
+      setRe( response ) ;
+      setIsLoading( false ) ;
+    } catch (error) {
+      console.log(error);
+      setIsLoading( false ) ;
+    }
+
+  }
+
+  useEffect( () => {
+    console.log( 'tq');
+    if( block != 0 && block ) {
+    get_nft_data() ;
+    console.log( '!!!' ) ;
+  } ;} , [block] ) ;
 
   const handleSeatSelection = (row, seat) => {
     const seatKey = `${row}${seat}`;
@@ -50,46 +81,58 @@ const SeatSelectionContainer = ({ onConfirm }) => {
     onConfirm(blocks, ticketQuantity);
   };
 
-  useEffect( () => {console.log(seat)} ,[seat] ) ;
-
   const renderSeatMap = () => {
 
     const seatMap = db[type-1] ;
 
-    return seatMap.map(({ row, seats }) => {
-      const rowSeats = [];
+    // return  seatMap.map(({ row, seats }) => {
+    //   const rowSeats = [];
 
-      for (let seat = 1; seat <= seats; seat++) {
-        const seatNumber = seat.toString().padStart(2, "0");
+    //   for (let seat = 1; seat <= seats; seat++) {
+    //     const seatNumber = seat.toString().padStart(2, "0");
 
-        const seatKey = `${row}${seatNumber}`;
-        const isSelected = blocks.includes(seatKey);
+    //     const seatKey = `${row}${seatNumber}`;
+    //     const isSelected = blocks.includes(seatKey);
 
-        let blank = 0;
-        if (seat % 3 === 0) {
-          blank = 10;
-        }
+    //     let blank = 0;
+    //     if (seat % 3 === 0) {
+    //       blank = 10;
+    //     }
 
-        const t = Number(db[ type - 1 ][ row - 1 ].sum) + Number( seat ) ;
+    //     const t = Number(db[ type - 1 ][ row - 1 ].sum) + Number( seat ) - 1 ;
 
-        rowSeats.push(
-          <div
-            key={seatKey}
-            className={`seat ml-4 ${isSelected ? ( "selected" ) : ( "" )} `}
-            style={{
-              marginLeft: blank,
-              color: "transparent",
-            }}
-            onClick={(e) => handleSeatSelection(row, seatNumber)}>
-          </div>
-        );
-      }
-      return (
-        <div key={`row-${row}`} className="row ">
-          {rowSeats}
-        </div>
-      );
-    });
+    //     rowSeats.push(
+    //       <div>
+    //       { re[ t ] === true ? (
+    //       <div
+    //         key={seatKey}
+    //         className={`seat ml-4 ${isSelected ? ( "selected" ) : ( "" )} `}
+    //         style={{
+    //           marginLeft: blank,
+    //           color: "transparent",
+    //         }}
+    //         onClick={(e) => handleSeatSelection(row, seatNumber)}>
+    //       </div>
+    //       ) : ( <div
+    //         key={seatKey}
+    //         className={`seat ml-4 ${isSelected ? ( "selected" ) : ( "" )} `}
+    //         style={{
+    //           marginLeft: blank,
+    //           color: "transparent",
+    //         }}
+    //         onClick={(e) => handleSeatSelection(row, seatNumber)}>
+    //       </div>
+    //       ) }
+    //       </div>
+    //     );
+    //   }
+    //   return (
+    //     <div key={`row-${row}`} className="row ">
+    //       {rowSeats}
+    //     </div>
+    //   );
+    // }) ;
+   
   };
 
   return (
@@ -114,6 +157,13 @@ const SeatSelectionContainer = ({ onConfirm }) => {
 const TicketBooking = () => {
   
   const { token_c, web3, account , game , setgame , type , settype , block , setblock } = useContext(AppContext);
+
+  useEffect( () => {
+    setgame() ;
+    setblock();
+    settype();
+  } ,[] ) ;
+
   const tickets = ["두산 : 롯데", "LG 트윈스 : 기아"];
   const seatSections = [
     {
@@ -156,7 +206,6 @@ const TicketBooking = () => {
     // 선택된 좌석 및 티켓 수량 전송
     setShowSeatSelection(false);
   };
-
 
   return (
     <div>
@@ -230,8 +279,7 @@ const TicketBooking = () => {
                   )}
                   <button
                     className="seat-selection-button"
-                    onClick={handleSeatSelectionClick}>
-                      
+                    onClick={handleSeatSelectionClick}>           
                     좌석 선택하기
                   </button>
                 </>
