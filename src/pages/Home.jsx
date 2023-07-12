@@ -15,33 +15,49 @@ const Homepage = ({ account }) => {
   const cardTitle = "인기 경기";
   const tickets = [
     {
-      title: "ticket1",
-      description: "Description of ticket 1",
-      image: "ticketImage1.png",
+      title: "두산 베어스 vs 롯데 자이언츠",
+      description: "다시 찾아온 빅매치!",
+      image: "/images/image1.png",
     },
     {
-      title: "ticket 2",
-      description: "Description of ticket 2",
-      image: "image2.jpg",
+      title: "LG 트윈스 vs 기아 타이거즈",
+      description: "호랑이 타이틀 매치",
+      image: "/images/image6.png",
     },
     {
-      title: "Product 3",
-      description: "Description of Product 3",
-      image: "image3.jpg",
+      title: "한화 이글스 vs 두산 베어스",
+      description: "연승의 주인공은?",
+      image: "/images/image7.png",
     },
     {
-      title: "Product 4",
-      description: "Description of Product 4",
-      image: "image4.jpg",
+      title: "SSG 랜더스 vs LG 트윈스",
+      description: "",
+      image: "/images/image9.png",
     },
   ];
 
   const cardTitle2 = "예정 경기";
   const popularGames = [
-    { title: "title", date: "7월 15일 토 2:00 PM", image: "game1.jpg" },
-    { title: "title", date: "7월 15일 토 2:00 PM", image: "game2.jpg" },
-    { title: "title", date: "7월 15일 토 2:00 PM", image: "game3.jpg" },
-    { title: "title", date: "7월 15일 토 2:00 PM", image: "game4.jpg" },
+    {
+      title: "title",
+      date: "7월 15일 토 2:00 PM",
+      image: "/images/image4.png",
+    },
+    {
+      title: "title",
+      date: "7월 15일 토 2:00 PM",
+      image: "/images/image8.png",
+    },
+    {
+      title: "두산 vs 롯데 ",
+      date: "7월 15일 토 2:00 PM",
+      image: "/images/image1.png",
+    },
+    {
+      title: "title",
+      date: "7월 15일 토 2:00 PM",
+      image: "/images/image3.png",
+    },
   ];
 
   return (
@@ -95,5 +111,4 @@ const Homepage = ({ account }) => {
     </>
   );
 };
-
 export default Homepage;

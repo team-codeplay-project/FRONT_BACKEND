@@ -3,10 +3,11 @@
   width: 100%;
   height: auto;
   overflow-y: auto;
-  background-color: transparent;
+  background-color: rgba(255, 255, 255, 0.994);
   padding-left: 20px;
   padding-right: 20px;
   z-index: 1;
+  box-shadow: 0px 6px px rgba(0, 0, 0, 0.1);
   position: relative;
 }
 
@@ -17,6 +18,7 @@
   transform: translateY(0);
   transition: transform 0.3s;
 }
+
 .black-shape {
   flex: 1;
   padding: 6px;
@@ -41,10 +43,12 @@
   white-space: nowrap;
   height: 280px;
   border-radius: 20px;
+  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
 }
 
 .gallery-container {
   display: inline-flex;
+  box-shadow: 0px 2px 8px rgba(0, 0, 0, 0.1);
 }
 
 .ticket-box {
@@ -71,10 +75,12 @@
 .ticket-info {
   position: absolute;
   bottom: 0;
+  height: 80px;
   width: 100%;
   padding: 10px;
-  background-color: rgba(0, 0, 0, 0.7);
-  color: #fff;
+  padding-top: 20px;
+  background-color: rgba(0, 0, 0, 0.563);
+  color: #ffffffe2;
   text-align: center;
   border-radius: 0 0 20px 20px;
 }
@@ -82,7 +88,7 @@
 /*아래 박스*/
 .icard {
   display: flex;
-  background-color: #fff;
+  background-color: rgba(255, 255, 255, 0.994);
   box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.1);
   overflow-y: auto;
   overflow-x: hidden;
@@ -107,15 +113,17 @@
   z-index: 2;
   margin-left: -20px;
   margin-right: -20px;
-  background-color: #ffffff;
+  background-color: rgba(255, 255, 255, 0.994);
+  box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.1);
 }
 
 .icard-image-placeholder {
   flex: 0 0 40%;
   max-width: 40%;
-  background-color: #0f1d87;
+
   width: 100%;
   height: 100px;
+  background-size: cover;
 }
 
 .icard-content {
