@@ -31,7 +31,6 @@ const SeatSelectionContainer = ({ onConfirm }) => {
 
   const get_nft_data = async() => {
 
-    //seat_info( uint _day , uint _block , uint _endidx )
     try {
 
       setIsLoading( true ) ;
@@ -81,57 +80,64 @@ const SeatSelectionContainer = ({ onConfirm }) => {
     onConfirm(blocks, ticketQuantity);
   };
 
-  const renderSeatMap = () => {
+  const temptry = () => {
 
     const seatMap = db[type-1] ;
 
-    // return  seatMap.map(({ row, seats }) => {
-    //   const rowSeats = [];
+    return  seatMap.map(({ row, seats }) => {
+      const rowSeats = [];
 
-    //   for (let seat = 1; seat <= seats; seat++) {
-    //     const seatNumber = seat.toString().padStart(2, "0");
+      for (let seat = 1; seat <= seats; seat++) {
+        const seatNumber = seat.toString().padStart(2, "0");
 
-    //     const seatKey = `${row}${seatNumber}`;
-    //     const isSelected = blocks.includes(seatKey);
+        const seatKey = `${row}${seatNumber}`;
+        const isSelected = blocks.includes(seatKey);
 
-    //     let blank = 0;
-    //     if (seat % 3 === 0) {
-    //       blank = 10;
-    //     }
+        let blank = 0;
+        if (seat % 3 === 0) {
+          blank = 10;
+        }
 
-    //     const t = Number(db[ type - 1 ][ row - 1 ].sum) + Number( seat ) - 1 ;
+        const t = Number(db[ type - 1 ][ row - 1 ].sum) + Number( seat ) - 1 ;
 
-    //     rowSeats.push(
-    //       <div>
-    //       { re[ t ] === true ? (
-    //       <div
-    //         key={seatKey}
-    //         className={`seat ml-4 ${isSelected ? ( "selected" ) : ( "" )} `}
-    //         style={{
-    //           marginLeft: blank,
-    //           color: "transparent",
-    //         }}
-    //         onClick={(e) => handleSeatSelection(row, seatNumber)}>
-    //       </div>
-    //       ) : ( <div
-    //         key={seatKey}
-    //         className={`seat ml-4 ${isSelected ? ( "selected" ) : ( "" )} `}
-    //         style={{
-    //           marginLeft: blank,
-    //           color: "transparent",
-    //         }}
-    //         onClick={(e) => handleSeatSelection(row, seatNumber)}>
-    //       </div>
-    //       ) }
-    //       </div>
-    //     );
-    //   }
-    //   return (
-    //     <div key={`row-${row}`} className="row ">
-    //       {rowSeats}
-    //     </div>
-    //   );
-    // }) ;
+        rowSeats.push(
+          <div>
+          { re[ t ] === true ? (
+          <div
+            key={seatKey}
+            className={`seat ml-4 ${isSelected ? ( "selected" ) : ( "" )} `}
+            style={{
+              marginLeft: blank,
+              color: "transparent",
+            }}
+            onClick={(e) => handleSeatSelection(row, seatNumber)}>
+          </div>
+          ) : ( <div
+            key={seatKey}
+            className={`seat ml-4 ${isSelected ? ( "selected" ) : ( "" )} `}
+            style={{
+              marginLeft: blank,
+              color: "transparent",
+            }}
+            onClick={(e) => handleSeatSelection(row, seatNumber)}>
+          </div>
+          ) }
+          </div>
+        );
+      }
+      return (
+        <div key={`row-${row}`} className="row ">
+          {rowSeats}
+        </div>
+      );
+    }) ;
+
+  }
+
+  const renderSeatMap = async() => {
+    
+    await get_nft_data()
+    // temptry() ;
    
   };
 
