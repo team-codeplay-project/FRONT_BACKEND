@@ -12,8 +12,8 @@ import { AppContext } from "../App";
 import axios from "axios";
 
 const Header = () => {
-  
-  const { account , setAccount , mynft , mytoken , getbalance } = useContext(AppContext);
+  const { account, setAccount, mynft, mytoken, getbalance } =
+    useContext(AppContext);
 
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [loggedInUser, setLoggedInUser] = useState(null);
@@ -25,10 +25,9 @@ const Header = () => {
         method: "eth_requestAccounts",
       });
 
-      // await 
+      // await
       const user = await axios.get(
-        `${process.env.REACT_APP_BACKEND_URL}/user/${accounts[0]}`
-        ,
+        `${process.env.REACT_APP_BACKEND_URL}/user/${accounts[0]}`,
         {
           headers: {
             "ngrok-skip-browser-warning": "any",
@@ -36,7 +35,7 @@ const Header = () => {
         }
       );
       setAccount(user.data.user);
-      chkchainID() ;
+      chkchainID();
     } catch (error) {
       console.error(error);
     }
@@ -50,11 +49,11 @@ const Header = () => {
     }
   };
 
-  useEffect( () => {
-    if( account ) {
+  useEffect(() => {
+    if (account) {
       getbalance();
     }
-  } ,[account] ) ;
+  }, [account]);
 
   const chkchainID = async () => {
     try {
@@ -130,40 +129,43 @@ const Header = () => {
           </div>
         ) : (
           <div>
-          <MdOutlineAddCard
-            className="header-icon card-icon"
-            size={40}
-            onClick={connect}
-          />
+            <MdOutlineAddCard
+              className="header-icon card-icon"
+              size={40}
+              onClick={connect}
+            />
           </div>
-          
         )}
         <div className={`side-menu ${isMenuOpen ? "open" : ""}`}>
           <GrClose className="close-icon2" size={20} onClick={toggleMenu} />
           {account ? (
             <div>
-            <span
-              className="welcome-message"
-              style={{
-                fontSize: "24px",
-                fontWeight: "bold",
-              }}>
-              {`${account.name} 님`}
-            </span>
-            <ul className="menu-items">
-              { mynft === -1 ? ( <li>loading~~</li> )
-              : (
-                <div>
-              <li className="menu-item">티켓 수 : {mynft} : 토큰 수 : {mytoken}</li>
-              <li className="menu-item">MY 티켓</li>
-              <li className="menu-item">MY 정보</li>
-              </div>
-              )
-              }
-            </ul>
+              <span
+                className="welcome-message"
+                style={{
+                  fontSize: "24px",
+                  fontWeight: "bold",
+                }}>
+                {`${account.name} 님`}
+              </span>
+              <ul className="menu-items">
+                {mynft === -1 ? (
+                  <li>loading~~</li>
+                ) : (
+                  <div>
+                    <li className="menu-item">
+                      티켓 수 : {mynft} : 토큰 수 : {mytoken}
+                    </li>
+                    <li className="menu-item">MY 티켓</li>
+                    <li className="menu-item">MY 정보</li>
+                  </div>
+                )}
+              </ul>
             </div>
           ) : (
-            <div className="login-link" onClick={connect}>로그인</div>
+            <div className="login-link" onClick={connect}>
+              로그인
+            </div>
           )}
         </div>
       </div>
