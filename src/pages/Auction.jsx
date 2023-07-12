@@ -12,7 +12,12 @@ const Auction = () => {
   const get_R_data = async () => {
     try {
       const response = await axios.get(
-        `${process.env.REACT_APP_BACKEND_URL}/auction/${r_idx}`
+        `${process.env.REACT_APP_BACKEND_URL}/auction/${r_idx}`,
+        {
+          headers: {
+            "ngrok-skip-browser-warning": "any",
+          },
+        }
       );
 
       const endchk = response.data.isEnd;

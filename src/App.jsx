@@ -26,6 +26,11 @@ function App() {
   const web3 = new Web3(window.ethereum);
   const token_c = new web3.eth.Contract(t_abi, t_addr);
   const nft_c = new web3.eth.Contract(n_abi, n_addr);
+  const [game, setgame] = useState(null);
+  const [type, settype] = useState(null);
+  const [block, setblock] = useState(null);
+
+  
 
   const getbalance = async() => {
     try {
@@ -44,7 +49,7 @@ function App() {
 
   return (
     <AppContext.Provider
-      value={{ account , setAccount , mynft , mytoken , getbalance , web3, token_c, nft_c } }>
+      value={{ game , setgame , type , settype , block , setblock  , account , setAccount , mynft , mytoken , getbalance , web3, token_c, nft_c } }>
       <BrowserRouter>
         <div className="iphone-container min-h-[844px]">
           <StatusBar />

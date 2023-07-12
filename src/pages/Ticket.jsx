@@ -1,65 +1,60 @@
-import React, { useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import "../style/booking.css";
 import "../style/seatselect.css";
 import Dropdown from "react-dropdown-select";
 import { BiBaseball } from "react-icons/bi";
 import { TbSection } from "react-icons/tb";
 import { LuArmchair } from "react-icons/lu";
-
-const SelectedSeatsCard = ({ seats }) => {
-  return (
-    <div className="selected-seats-card">
-      <div className="selected-seats">
-        <ul>
-          {seats.map((seat) => {
-            const row = seat.substring(0, 1);
-            const column = seat.substring(1);
-            const formattedSeat = `${parseInt(row)}-${parseInt(column)}`;
-
-            return <li key={seat}>{formattedSeat}</li>;
-          })}
-        </ul>
-      </div>
-    </div>
-  );
-};
+import { AppContext } from "../App";
 
 const SeatSelectionContainer = ({ onConfirm }) => {
-  const [selectedSeats, setSelectedSeats] = useState([]);
+  const [blocks, setblocks] = useState([]);
   const [ticketQuantity, setTicketQuantity] = useState(1);
+  const { token_c, web3, account , game , setgame , type , settype , block , setblock } = useContext(AppContext);
+  const [seat , setSeat] = useState();
+  const db = [[
+    { row: 1, seats: 10 , sum : 0 },
+    { row: 2, seats: 11 , sum : 10 },
+    { row: 3, seats: 12 , sum : 21 },
+    { row: 4, seats: 13 , sum : 33 }],
+    [{ row: 1, seats: 13 , sum : 0 },
+    { row: 2, seats: 12 , sum : 13 },
+    { row: 3, seats: 4 , sum : 25 },
+    { row: 4, seats: 10 , sum : 35 }, ],
+    [{ row: 1, seats: 7 , sum : 0 },
+      { row: 2, seats: 6 , sum : 7 },
+      { row: 3, seats: 5 , sum : 13 },
+      { row: 4, seats: 12 , sum : 25 }],
+  ];
 
   const handleSeatSelection = (row, seat) => {
     const seatKey = `${row}${seat}`;
-    const isSelected = selectedSeats.includes(seatKey);
+    const isSelected = blocks.includes(seatKey);
 
     if (isSelected) {
-      const updatedSeats = selectedSeats.filter((seat) => seat !== seatKey);
-      setSelectedSeats(updatedSeats);
+      const updatedSeats = blocks.filter((seat) => seat !== seatKey);
+      setblocks(updatedSeats);
       setTicketQuantity(0);
     } else {
-      if (selectedSeats.length < 1) {
-        const updatedSeats = [...selectedSeats, seatKey];
-        setSelectedSeats(updatedSeats);
+      if (blocks.length < 1) {
+        const updatedSeats = [...blocks, seatKey];
+        setblocks(updatedSeats);
+        const a = Number(db[ type - 1 ][ row - 1 ].sum) + Number( seat ) ;
+        setSeat(a);
         setTicketQuantity(1);
       }
     }
   };
 
   const handleConfirmBooking = () => {
-    onConfirm(selectedSeats, ticketQuantity);
+    onConfirm(blocks, ticketQuantity);
   };
 
-  const handleTicketQuantityChange = (event) => {
-    setTicketQuantity(parseInt(event.target.value));
-  };
+  useEffect( () => {console.log(seat)} ,[seat] ) ;
 
   const renderSeatMap = () => {
-    const seatMap = [
-      { row: 1, seats: 13 },
-      { row: 2, seats: 15 },
-      { row: 3, seats: 15 },
-      { row: 4, seats: 16 },
-    ];
+
+    const seatMap = db[type-1] ;
 
     return seatMap.map(({ row, seats }) => {
       const rowSeats = [];
@@ -68,28 +63,29 @@ const SeatSelectionContainer = ({ onConfirm }) => {
         const seatNumber = seat.toString().padStart(2, "0");
 
         const seatKey = `${row}${seatNumber}`;
-        const isSelected = selectedSeats.includes(seatKey);
+        const isSelected = blocks.includes(seatKey);
 
         let blank = 0;
         if (seat % 3 === 0) {
           blank = 10;
         }
 
+        const t = Number(db[ type - 1 ][ row - 1 ].sum) + Number( seat ) ;
+
         rowSeats.push(
           <div
             key={seatKey}
-            className={`seat ml-4 ${isSelected ? "selected" : ""}`}
+            className={`seat ml-4 ${isSelected ? ( "selected" ) : ( "" )} `}
             style={{
               marginLeft: blank,
               color: "transparent",
             }}
-            onClick={() => handleSeatSelection(row, seatNumber)}>
-            {seatNumber.length > 2 ? seatNumber : `5${seatNumber}`}{" "}
+            onClick={(e) => handleSeatSelection(row, seatNumber)}>
           </div>
         );
       }
       return (
-        <div key={`row-${row}`} className="row">
+        <div key={`row-${row}`} className="row ">
           {rowSeats}
         </div>
       );
@@ -103,12 +99,12 @@ const SeatSelectionContainer = ({ onConfirm }) => {
           <div className="seat-map">{renderSeatMap()}</div>
         </div>
         <div className="booking-container">
-          {selectedSeats.length > 0 && (
-            <SelectedSeatsCard seats={selectedSeats} />
+          {blocks.length > 0 && (
+            <block seats={blocks} />
           )}
         </div>
         <button className="book-button" onClick={handleConfirmBooking}>
-          예매하기
+          뒤로가기
         </button>
       </div>
     </div>
@@ -116,37 +112,36 @@ const SeatSelectionContainer = ({ onConfirm }) => {
 };
 
 const TicketBooking = () => {
+  
+  const { token_c, web3, account , game , setgame , type , settype , block , setblock } = useContext(AppContext);
   const tickets = ["두산 : 롯데", "LG 트윈스 : 기아"];
   const seatSections = [
     {
-      value: "테이블석",
+      value: 1,
       label: "테이블석",
-      options: [{ value: "1루 테이블석", label: "1루 테이블석" }],
+      options: [{ value : 101, label: "1루 테이블석" }],
     },
     {
-      value: "네이비석",
+      value: 2,
       label: "네이비석",
-      options: [{ value: "1루 네이비석", label: "1루 네이비석" }],
+      options: [{ value: 201, label: "1루 네이비석" }],
     },
     {
-      value: "익사이팅존",
+      value: 3,
       label: "익사이팅존",
-      options: [{ value: "1루 익사이팅존", label: "1루 익사이팅존" }],
+      options: [{ value: 301, label: "1루 익사이팅존" }],
     },
   ];
 
-  const [selectedTicket, setSelectedTicket] = useState(null);
-  const [selectedSection, setSelectedSection] = useState(null);
-  const [selectedSeat, setSelectedSeat] = useState(null);
   const [showSeatSelection, setShowSeatSelection] = useState(false);
 
   const handleTicketClick = (ticket) => {
-    setSelectedTicket(ticket);
+    setgame(ticket);
   };
 
   const handleSectionChange = (option) => {
-    setSelectedSection(option[0].value);
-    setSelectedSeat(null);
+    settype(option[0].value);
+    setblock(null);
     setShowSeatSelection(false);
   };
 
@@ -154,25 +149,14 @@ const TicketBooking = () => {
     setShowSeatSelection(true);
   };
 
-  const handleSeatSelectionClose = () => {
-    setShowSeatSelection(false);
-  };
-
-  const handleBooking = () => {
-    if (selectedTicket && selectedSeat) {
-      console.log("Booking Confirmed!");
-    } else {
-      console.log("Please select all options!");
-    }
-  };
-
-  const handleConfirmBooking = (selectedSeats, ticketQuantity) => {
-    console.log("Selected Seats:", selectedSeats);
-    console.log("Ticket Quantity:", ticketQuantity);
+  const handleConfirmBooking = (blocks, ticketQuantity) => {
+    // console.log("Selected Seats:", blocks);
+    // console.log("Ticket Quantity:", ticketQuantity);
     // 예매 확인 처리 함수
     // 선택된 좌석 및 티켓 수량 전송
     setShowSeatSelection(false);
   };
+
 
   return (
     <div>
@@ -190,7 +174,7 @@ const TicketBooking = () => {
               <div
                 key={ticket}
                 className={`ticket-item ${
-                  selectedTicket === ticket ? "selected" : ""
+                  game === ticket ? "selected" : ""
                 }`}
                 onClick={() => handleTicketClick(ticket)}>
                 <p>{ticket}</p>
@@ -207,7 +191,7 @@ const TicketBooking = () => {
           <div className="seat-select">
             <Dropdown
               options={seatSections}
-              value={selectedSection}
+              value={type}
               onChange={handleSectionChange}
               placeholder="Select a section"
               className="dropdown-select"
@@ -216,7 +200,7 @@ const TicketBooking = () => {
           </div>
         </div>
 
-        {selectedSection && (
+        {type && (
           <div className="section3">
             <h3 className="section3-title">
               <LuArmchair className="section3-icon" />
@@ -226,16 +210,16 @@ const TicketBooking = () => {
               <Dropdown
                 options={
                   seatSections.find(
-                    (section) => section.value === selectedSection
+                    (section) => section.value === type
                   )?.options || []
                 }
-                value={selectedSeat}
-                onChange={(option) => setSelectedSeat(option[0].value)}
+                value={block}
+                onChange={(option) => setblock(option[0].value)}
                 placeholder="Select a seat"
                 className="dropdown-select"
                 menuPlacement="auto"
               />
-              {selectedSeat === "1루 테이블석" && (
+              {block && (
                 <>
                   {showSeatSelection && (
                     <div className="modal-overlay">
@@ -247,6 +231,7 @@ const TicketBooking = () => {
                   <button
                     className="seat-selection-button"
                     onClick={handleSeatSelectionClick}>
+                      
                     좌석 선택하기
                   </button>
                 </>

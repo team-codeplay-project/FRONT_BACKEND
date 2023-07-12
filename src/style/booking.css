@@ -372,6 +372,20 @@
   transition: background-color 0.3s ease;
 }
 
+.seat-reserved {
+  display: inline-block;
+  width: 11px;
+  height: 11px;
+  background-color: rgba(255, 122, 255, 0.3);
+  border: none;
+  margin: 2px;
+  text-align: center;
+  line-height: 20px;
+  cursor: pointer;
+  border-radius: 2px;
+  transition: background-color 0.3s ease;
+}
+
 .seat.selected {
   background-color: #007aff;
   color: white;
