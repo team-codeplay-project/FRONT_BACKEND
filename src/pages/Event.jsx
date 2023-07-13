@@ -12,8 +12,8 @@ const EventPage = () => {
   const [data, setdata] = useState();
   const [toggle, setToggle] = useState(false);
   const { account, getbalance } = useContext(AppContext);
-  const [page, setPage] = useState(1) ;
-  const [sp , setSp ] = useState(0) ;
+  const [page, setPage] = useState(1);
+  const [sp, setSp] = useState(0);
   let content;
   let buttonGroup = null;
 
@@ -57,21 +57,18 @@ const EventPage = () => {
   const onClickPage = (p) => () => {
     setSp(p);
   };
-  
+
   const pageComp = () => {
     let pageArray = [];
-
 
     for (let i = 0; i < page; i++) {
       pageArray.push(
         <button
           key={i}
-          className={`ml-4 text-2xl font-bold hover:text-white ${
-            i + 1 === 1 ? "text-white" : "text-gray-400"
-          }`}
-          onClick={onClickPage(i + 1)}
-        >
-          {i + 1} <span className="text-base">페이지</span>
+          className={`page-button
+          ${i + 1 === 1 ? "text-white" : "text-gray-400"}`}
+          onClick={onClickPage(i + 1)}>
+          {i + 1} <span className="text-base"></span>
         </button>
       );
     }
@@ -125,11 +122,11 @@ const EventPage = () => {
     }
   }, [activeTab]);
 
-  useEffect( () => {
-    if( data ){
-    setPage( ( data.length -1 ) / 3 + 1 ) ;
-  }
-  } ,[data] ) ;
+  useEffect(() => {
+    if (data) {
+      setPage((data.length - 1) / 3 + 1);
+    }
+  }, [data]);
 
   const navigate = useNavigate();
   useEffect(() => {
@@ -141,22 +138,21 @@ const EventPage = () => {
 
   if (activeTab === 1) {
     content = (
-      <div className="product-container2">
+      <div className="product-box">
         {isLoading ? (
           <div>loading</div>
         ) : (
           <div>
-            <div>{ pageComp() }</div>
-            <div>{
-          data?.map((v, i) => {
-            if (v.isEnd === toggle) {
-              return <RaffleCard r_data={v} key={i} />;
-            }
-            return null;
-          })
-        }</div>
-        </div>
-        
+            <div>{pageComp()}</div>
+            <div>
+              {data?.map((v, i) => {
+                if (v.isEnd === toggle) {
+                  return <RaffleCard r_data={v} key={i} />;
+                }
+                return null;
+              })}
+            </div>
+          </div>
         )}
       </div>
     );
@@ -172,22 +168,21 @@ const EventPage = () => {
     );
   } else if (activeTab === 2) {
     content = (
-      <div className="product-container2">
+      <div className="product-box">
         {isLoading ? (
           <div>loading</div>
         ) : (
           <div>
-            <div>{ pageComp() }</div>
-            <div>{
-          data?.map((v, i) => {
-            if (v.isEnd === toggle) {
-              return <AuctionCard r_data={v} key={i} />;
-            }
-            return null;
-          })
-        }</div>
-        </div>
-        
+            <div>{pageComp()}</div>
+            <div>
+              {data?.map((v, i) => {
+                if (v.isEnd === toggle) {
+                  return <AuctionCard r_data={v} key={i} />;
+                }
+                return null;
+              })}
+            </div>
+          </div>
         )}
       </div>
     );

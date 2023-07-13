@@ -79,6 +79,7 @@
   width: 100%;
   max-width: 350px;
   margin: 0 auto;
+  margin-bottom: 15px;
 }
 
 .product-box .tab-item:hover {
@@ -199,9 +200,9 @@
 .raffle-button {
   background-color: #007bff;
   color: #fff;
-  padding: 10px 20px;
+  padding: 6px 20px;
   border: none;
-  border-radius: 4px;
+  border-radius: 6px;
   cursor: pointer;
 }
 
@@ -219,14 +220,14 @@
   padding: 8px;
   margin-right: 8px;
   border: 1px solid #ccc;
-  border-radius: 4px;
+  border-radius: 6px;
   width: 150px;
 }
 
 .auction-button {
   background-color: #007bff;
   color: #fff;
-  padding: 10px 20px;
+  padding: 6px 20px;
   border: none;
   border-radius: 4px;
   cursor: pointer;
@@ -260,4 +261,27 @@
 
 .button-group button:hover {
   background-color: #e7e7e7;
+}
+
+.page-button {
+  background-color: #ffafa4;
+  border: none;
+  color: #1a1a1a;
+  padding: 0px 3px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 2px;
+  margin: 2px 2px;
+  margin-bottom: 10px;
+
+  cursor: pointer;
+  border-radius: 100px;
+  transition-duration: 0.4s;
+}
+
+.page-button:hover {
+  background-color: white;
+  color: #ffafa4;
+  border: 2px solid#ffafa4;
 }

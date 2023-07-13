@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import "../style/NftDetailPage.css";
+import "../style/RFDetail.css";
 
 const NftDetailPage = () => {
   const [nftData, setNftData] = useState({

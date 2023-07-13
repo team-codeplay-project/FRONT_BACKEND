@@ -16,7 +16,7 @@ import Web3 from "web3";
 import LoginPage from "./pages/login";
 import TicketBooking from "./pages/Ticket2";
 import Nftcardlist from "./components/nftcardlist";
-import NftDetailPage from "./components/NFTdetail";
+import NftDetailPage from "./components/RFdetail";
 
 export const AppContext = createContext();
 
@@ -105,7 +105,7 @@ function App() {
               <Route path="/LoginPage" element={<LoginPage />} />
               <Route path="/AdminPage" element={<AdminPage admin={admin} />} />
               <Route path="/nft" element={<Nfttest />} />
-              <Route path="/NftDetailPage" element={<NftDetailPage />} />
+              <Route path="/DetailPage" element={<NftDetailPage />} />
             </Routes>
             <Footer />
           </div>

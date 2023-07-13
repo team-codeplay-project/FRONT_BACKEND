@@ -7,7 +7,7 @@ const RaffleCard = ({ r_data }) => {
   };
 
   return (
-    <div className="product-box">
+    <div className="product-box ">
       <div className="product-image"></div>
       <div className="product-info">
         <h3>{r_data.name}</h3>
