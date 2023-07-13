@@ -6,6 +6,7 @@ import { GrClose } from "react-icons/gr";
 import { useNavigate } from "react-router-dom";
 import { AppContext } from "../App";
 import axios from "axios";
+import { IoIosArrowForward } from "react-icons/io";
 
 const Header = () => {
   const { setTemp, account, setAccount, mynft, mytoken, getbalance } =
@@ -142,7 +143,7 @@ const Header = () => {
           {account ? (
             <div>
               <span
-                className="welcome-message"
+                className="login-link"
                 style={{
                   fontSize: "24px",
                   fontWeight: "bold",
@@ -165,7 +166,11 @@ const Header = () => {
             </div>
           ) : (
             <div className="login-link" onClick={connect}>
-              로그인
+              <span style={{ marginRight: "20px" }}>로그인</span>
+              <IoIosArrowForward
+                size={25}
+                style={{ verticalAlign: "middle" }}
+              />
             </div>
           )}
         </div>

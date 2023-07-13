@@ -1,0 +1,60 @@
+.container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+}
+
+.nft-details {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  background-color: #f0f0f0;
+  border-radius: 10px;
+  padding: 20px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+}
+
+.nft-image {
+  margin-bottom: 20px;
+}
+
+.nft-image img {
+  width: 300px;
+  height: 300px;
+  object-fit: cover;
+  border-radius: 10px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+  transform: rotateY(20deg) rotateX(20deg);
+  transition: transform 0.3s ease-in-out;
+}
+
+.nft-image img:hover {
+  transform: rotateY(0deg) rotateX(0deg);
+}
+
+.nft-info {
+  text-align: center;
+}
+
+.nft-title {
+  font-size: 24px;
+  font-weight: bold;
+  margin-bottom: 10px;
+}
+
+.nft-description {
+  font-size: 16px;
+  color: #666;
+  margin-bottom: 20px;
+}
+
+.nft-owner {
+  font-size: 14px;
+  color: #888;
+}
+
+.label {
+  font-weight: bold;
+  margin-right: 5px;
+}

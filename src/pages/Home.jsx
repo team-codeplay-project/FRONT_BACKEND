@@ -1,15 +1,7 @@
 import React from "react";
 import { IoIosArrowForward } from "react-icons/io";
+import { Link } from "react-router-dom";
 import "../style/home.css";
-
-// import ticketImage1 from "../";
-// import ticketImage2 from "../images/image2.jpg";
-// import gameImage1 from "../images/game1.jpg";
-// import gameImage2 from "../images/game2.jpg";
-
-const handleButtonClick = (game) => {
-  console.log("Clicked game:", game);
-};
 
 const Homepage = ({ account }) => {
   const cardTitle = "인기 경기";
@@ -49,7 +41,7 @@ const Homepage = ({ account }) => {
       image: "/images/image8.png",
     },
     {
-      title: "두산 vs 롯데 ",
+      title: "두산 vs 롯데",
       date: "7월 15일 토 2:00 PM",
       image: "/images/image1.png",
     },
@@ -95,11 +87,9 @@ const Homepage = ({ account }) => {
                   <small className="icard-updated">{game.date}</small>
                   <div className="icard-button-container">
                     <div className="icard-button-wrapper">
-                      <button
-                        className="icard-button"
-                        onClick={() => handleButtonClick(game)}>
+                      <Link to="/NftDetailPage" className="icard-button">
                         <IoIosArrowForward className="icard-button-icon" />
-                      </button>
+                      </Link>
                     </div>
                   </div>
                 </div>
@@ -111,4 +101,5 @@ const Homepage = ({ account }) => {
     </>
   );
 };
+
 export default Homepage;
