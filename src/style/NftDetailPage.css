@@ -2,16 +2,17 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  height: 100vh;
+  margin-top: 60px;
 }
 
 .nft-details {
   display: flex;
   flex-direction: column;
   align-items: center;
-  background-color: #f0f0f0;
-  border-radius: 10px;
+  background-color: #000000;
   padding: 20px;
+  border-radius: 30px;
+  height: 890px;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
 }
 
@@ -45,13 +46,13 @@
 
 .nft-description {
   font-size: 16px;
-  color: #666;
+  color: #ffffff;
   margin-bottom: 20px;
 }
 
 .nft-owner {
   font-size: 14px;
-  color: #888;
+  color: #ffffff;
 }
 
 .label {

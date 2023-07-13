@@ -11,7 +11,7 @@ const EventPage = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [data, setdata] = useState();
   const [toggle, setToggle] = useState(false);
-  const { account , getbalance } = useContext(AppContext);
+  const { account, getbalance } = useContext(AppContext);
 
   const handleTabClick = (tabIndex) => {
     setActiveTab(tabIndex);
@@ -63,14 +63,13 @@ const EventPage = () => {
     }
   }, [activeTab]);
 
-  
-    const navigate = useNavigate() ;
-    useEffect(() => {
-    if( !account ){
+  const navigate = useNavigate();
+  useEffect(() => {
+    if (!account) {
       navigate("/");
     }
-    getbalance() ;
-    } , [] ) ;
+    getbalance();
+  }, []);
 
   let content;
   let buttonGroup = null;
@@ -126,10 +125,10 @@ const EventPage = () => {
     buttonGroup = (
       <div className="button-group">
         <button className="ongoing-button" onClick={() => setToggle(false)}>
-          진행중
+          {/* 진행 */}
         </button>
-        <button className="completed-button" onClick={() => setToggle(true)}>
-          마감
+        <button className="completed-button " onClick={() => setToggle(true)}>
+          {/* 마감 */}
         </button>
       </div>
     );
@@ -151,10 +150,10 @@ const EventPage = () => {
     buttonGroup = (
       <div className="button-group">
         <button className="ongoing-button" onClick={() => setToggle(false)}>
-          진행중
+          {/* 진행 */}
         </button>
         <button className="completed-button" onClick={() => setToggle(true)}>
-          마감
+          {/* 마감 */}
         </button>
       </div>
     );
@@ -201,9 +200,9 @@ const EventPage = () => {
         </button>
       </div>
 
-      <div className="product-gallery min-h-[844px]">{content}</div>
-
       {buttonGroup}
+
+      <div className="product-gallery min-h-[844px]">{content}</div>
     </>
   );
 };

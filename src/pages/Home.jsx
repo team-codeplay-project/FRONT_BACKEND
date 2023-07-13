@@ -1,6 +1,6 @@
 import React from "react";
 import { IoIosArrowForward } from "react-icons/io";
-import { Link } from "react-router-dom";
+// import { Link } from "react-router-dom";
 import "../style/home.css";
 
 const Homepage = ({ account }) => {
@@ -87,9 +87,9 @@ const Homepage = ({ account }) => {
                   <small className="icard-updated">{game.date}</small>
                   <div className="icard-button-container">
                     <div className="icard-button-wrapper">
-                      <Link to="/NftDetailPage" className="icard-button">
+                      <div div className="icard-button">
                         <IoIosArrowForward className="icard-button-icon" />
-                      </Link>
+                      </div>
                     </div>
                   </div>
                 </div>

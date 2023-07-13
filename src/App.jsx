@@ -15,6 +15,8 @@ import { n_abi, n_addr, t_abi, t_addr } from "./raffletest.config";
 import Web3 from "web3";
 import LoginPage from "./pages/login";
 import TicketBooking from "./pages/Ticket2";
+import Nftcardlist from "./components/nftcardlist";
+import NftDetailPage from "./components/NFTdetail";
 
 export const AppContext = createContext();
 
@@ -33,13 +35,13 @@ function App() {
 
   const getbalance = async () => {
     try {
-      if( account ) {
-      setMynft(-1);
-      const nft_b = await nft_c.methods.balanceOf(account.address).call();
-      const token_b = await token_c.methods.balanceOf(account.address).call();
-      setMynft(Number(nft_b));
-      setMytoken(Number(token_b));
-    }
+      if (account) {
+        setMynft(-1);
+        const nft_b = await nft_c.methods.balanceOf(account.address).call();
+        const token_b = await token_c.methods.balanceOf(account.address).call();
+        setMynft(Number(nft_b));
+        setMytoken(Number(token_b));
+      }
     } catch (error) {
       console.error(error);
     }
@@ -103,6 +105,7 @@ function App() {
               <Route path="/LoginPage" element={<LoginPage />} />
               <Route path="/AdminPage" element={<AdminPage admin={admin} />} />
               <Route path="/nft" element={<Nfttest />} />
+              <Route path="/NftDetailPage" element={<NftDetailPage />} />
             </Routes>
             <Footer />
           </div>
