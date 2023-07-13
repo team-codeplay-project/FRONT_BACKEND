@@ -13,7 +13,7 @@ const RaffleCard = ({ r_data }) => {
         <h3>{r_data.name}</h3>
         {/* <p> 이미지 주소 {r_data.URL} </p> */}
         <button className="raffle-button" onClick={handleEntry}>
-          응모하기
+          자세히보기
         </button>
       </div>
     </div>

@@ -12,9 +12,71 @@ const EventPage = () => {
   const [data, setdata] = useState();
   const [toggle, setToggle] = useState(false);
   const { account, getbalance } = useContext(AppContext);
+  const [page, setPage] = useState(1) ;
+  const [sp , setSp ] = useState(0) ;
+  let content;
+  let buttonGroup = null;
+
+  const items = [
+    {
+      id: 1,
+      image: "product1.jpg",
+      name: "아이템 1",
+      description: "아이템 1에 대한 설명",
+    },
+    {
+      id: 2,
+      image: "product2.jpg",
+      name: "아이템 2",
+      description: "아이템 2에 대한 설명",
+    },
+    {
+      id: 3,
+      image: "product3.jpg",
+      name: "아이템 3",
+      description: "아이템 3에 대한 설명",
+    },
+    {
+      id: 4,
+      image: "product4.jpg",
+      name: "아이템 4",
+      description: "아이템 4에 대한 설명",
+    },
+    {
+      id: 5,
+      image: "product5.jpg",
+      name: "아이템 5",
+      description: "아이템 5에 대한 설명",
+    },
+  ];
 
   const handleTabClick = (tabIndex) => {
     setActiveTab(tabIndex);
+  };
+
+  const onClickPage = (p) => () => {
+    setSp(p);
+  };
+  
+  const pageComp = () => {
+    let pageArray = [];
+
+
+    for (let i = 0; i < page; i++) {
+      pageArray.push(
+        <button
+          key={i}
+          className={`ml-4 text-2xl font-bold hover:text-white ${
+            i + 1 === 1 ? "text-white" : "text-gray-400"
+          }`}
+          onClick={onClickPage(i + 1)}
+        >
+          {i + 1} <span className="text-base">페이지</span>
+        </button>
+      );
+    }
+
+    return pageArray;
   };
 
   const get_Raffle_Data = async () => {
@@ -63,6 +125,12 @@ const EventPage = () => {
     }
   }, [activeTab]);
 
+  useEffect( () => {
+    if( data ){
+    setPage( ( data.length -1 ) / 3 + 1 ) ;
+  }
+  } ,[data] ) ;
+
   const navigate = useNavigate();
   useEffect(() => {
     if (!account) {
@@ -71,54 +139,24 @@ const EventPage = () => {
     getbalance();
   }, []);
 
-  let content;
-  let buttonGroup = null;
-
-  const items = [
-    {
-      id: 1,
-      image: "product1.jpg",
-      name: "아이템 1",
-      description: "아이템 1에 대한 설명",
-    },
-    {
-      id: 2,
-      image: "product2.jpg",
-      name: "아이템 2",
-      description: "아이템 2에 대한 설명",
-    },
-    {
-      id: 3,
-      image: "product3.jpg",
-      name: "아이템 3",
-      description: "아이템 3에 대한 설명",
-    },
-    {
-      id: 4,
-      image: "product4.jpg",
-      name: "아이템 4",
-      description: "아이템 4에 대한 설명",
-    },
-    {
-      id: 5,
-      image: "product5.jpg",
-      name: "아이템 5",
-      description: "아이템 5에 대한 설명",
-    },
-  ];
-
   if (activeTab === 1) {
     content = (
       <div className="product-container2">
         {isLoading ? (
           <div>loading</div>
         ) : (
+          <div>
+            <div>{ pageComp() }</div>
+            <div>{
           data?.map((v, i) => {
             if (v.isEnd === toggle) {
               return <RaffleCard r_data={v} key={i} />;
             }
             return null;
           })
+        }</div>
+        </div>
+        
         )}
       </div>
     );
@@ -138,12 +176,18 @@ const EventPage = () => {
         {isLoading ? (
           <div>loading</div>
         ) : (
+          <div>
+            <div>{ pageComp() }</div>
+            <div>{
           data?.map((v, i) => {
             if (v.isEnd === toggle) {
               return <AuctionCard r_data={v} key={i} />;
             }
             return null;
           })
+        }</div>
+        </div>
+        
         )}
       </div>
     );
