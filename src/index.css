@@ -10,7 +10,7 @@ body {
   justify-content: center;
   overflow: hidden;
   min-height: 100vh;
-  background: #f9f9f9;
+  background: transparent;
 }
 
 /* 화면 */
