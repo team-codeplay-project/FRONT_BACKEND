@@ -7,6 +7,7 @@ import { LuArmchair } from 'react-icons/lu';
 import '../style/booking.css';
 import { AppContext } from '../App';
 import { useNavigate } from 'react-router-dom';
+import axios from 'axios';
 
 const TicketBooking = () => {
   const tickets = [ { label : '두산:롯데' , value : 1 } ,{ label : 'LG트윈스:기아' , value : 2 } ];
@@ -111,6 +112,21 @@ const TicketBooking = () => {
         from: account.address,
         value: web3.utils.toWei('0.0001', 'ether'),
       });
+      
+      const responses = await axios.post(
+        `${process.env.REACT_APP_BACKEND_URL}/nft/`,
+        {
+          day,
+          type: _type ,
+          owner: account.address,
+        },
+        {
+          headers: {
+            'ngrok-skip-browser-warning': 'any',
+          },
+        }
+      );
+      
 
       setloading_mint(false);
 
