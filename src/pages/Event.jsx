@@ -4,6 +4,7 @@ import axios from "axios";
 import RaffleCard from "../components/list_rafflecard";
 import AuctionCard from "../components/list_auctioncard";
 import { AppContext } from "../App";
+import { useNavigate } from "react-router-dom";
 
 const EventPage = () => {
   const [activeTab, setActiveTab] = useState(1);
@@ -62,13 +63,14 @@ const EventPage = () => {
     }
   }, [activeTab]);
 
- 
-  useEffect(() => {
+  
+    const navigate = useNavigate() ;
+    useEffect(() => {
     if( !account ){
-
+      navigate("/");
     }
     getbalance() ;
-  } , [] ) ;
+    } , [] ) ;
 
   let content;
   let buttonGroup = null;

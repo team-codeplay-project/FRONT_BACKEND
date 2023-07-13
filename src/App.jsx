@@ -33,11 +33,13 @@ function App() {
 
   const getbalance = async () => {
     try {
+      if( account ) {
       setMynft(-1);
       const nft_b = await nft_c.methods.balanceOf(account.address).call();
       const token_b = await token_c.methods.balanceOf(account.address).call();
       setMynft(Number(nft_b));
       setMytoken(Number(token_b));
+    }
     } catch (error) {
       console.error(error);
     }

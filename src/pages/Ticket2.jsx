@@ -9,7 +9,7 @@ import { AppContext } from '../App';
 import { useNavigate } from 'react-router-dom';
 
 const TicketBooking = () => {
-  const tickets = ['두산:롯데', 'LG트윈스:기아'];
+  const tickets = [ { label : '두산:롯데' , value : 1 } ,{ label : 'LG트윈스:기아' , value : 2 } ];
   const { web3, account, nft_c } = useContext(AppContext);
   const seatSections = [
     {
@@ -60,7 +60,6 @@ const TicketBooking = () => {
   const [isloading, setIsLoading] = useState(false);
   const [loading_mint, setloading_mint] = useState(false);
   const [re, setRe] = useState();
-  const navigate = useNavigate();
 
   const c_game = (ticket) => {
     settype();
@@ -75,18 +74,17 @@ const TicketBooking = () => {
   };
 
   const get_nft_data = async () => {
+
     try {
       setIsLoading(true);
-      const day = 230715;
-      if (game == 2) day = 230716;
+      let day = 230715;
+      if (game === 2) day = 230716;      
 
       const tblock = type * 1000 + block;
       const edidx = Number(db[type - 1][4].sum) + Number(db[type - 1][4].seats);
-      console.log(day, tblock, edidx);
+      
       const response = await nft_c.methods.seat_info(day, tblock, edidx).call();
       setRe(response);
-      console.log(response);
-
       setIsLoading(false);
     } catch (error) {
       console.log(error);
@@ -104,8 +102,8 @@ const TicketBooking = () => {
 
   const buyticket = async (idx) => {
     try {
-      const day = 230715;
-      if (game == 2) day = 230716;
+      let day = 230715;
+      if (game === 2) day = 230716;
 
       setloading_mint(true);
       const _type = type * 1000000 + block * 1000 + idx + 1;
@@ -116,11 +114,11 @@ const TicketBooking = () => {
 
       setloading_mint(false);
 
-      navigate('/ticket');
     } catch (error) {
       setloading_mint(true);
       console.error(error);
     } finally {
+      navigate('/ticket');
       c_game();
     }
   };
@@ -130,6 +128,13 @@ const TicketBooking = () => {
       get_nft_data();
     }
   }, [block]);
+
+  const navigate = useNavigate() ;
+  useEffect( () => {
+    if( !account ) {
+      navigate("/");
+    }
+  } , [] );
 
   return (
     <div>
@@ -146,13 +151,13 @@ const TicketBooking = () => {
                 경기
               </h3>
               <div className="ticket-list">
-                {tickets.map((v) => (
+                {tickets.map((v,i) => (
                   <div
-                    key={v}
-                    className={`ticket-item ${game === v ? 'selected' : ''}`}
-                    onClick={() => c_game(v)}
+                    key={i}
+                    className={`ticket-item ${game === v.value ? 'selected' : ''}`}
+                    onClick={() => c_game(v.value)}
                   >
-                    <p>{v}</p>
+                    <p>{v.label}</p>
                   </div>
                 ))}
               </div>
@@ -198,8 +203,7 @@ const TicketBooking = () => {
           </>
         )}
         {block &&
-          re &&
-          (isloading ? (
+          re && ( loading_mint ? <div>minting 중... </div> : (isloading ? (
             <div> isloading</div>
           ) : (
             <div>
@@ -209,7 +213,7 @@ const TicketBooking = () => {
                     y >= 13 - db[type - 1][x].seats ? (
                       re[
                         db[type - 1][x].sum + y - 13 + db[type - 1][x].seats
-                      ] == false ? (
+                      ] === false ? (
                         <button
                           key={y}
                           className={`m-1 w-8 h-5 border rounded-md border-gray-400 bg-white-100`}
@@ -236,7 +240,9 @@ const TicketBooking = () => {
                 </div>
               ))}
             </div>
-          ))}
+          )))
+          
+          }
       </div>
     </div>
   );
