@@ -3,6 +3,7 @@ import "../style/mypage.css";
 import Nftcardlist from "../components/nftcardlist";
 import { AppContext } from "../App";
 import axios from "axios";
+import { useNavigate } from "react-router-dom";
 // import { Container, Row, Col, Card, Button } from "react-bootstrap";
 // import { ChevronLeft } from "react-icons/ai";
 // import MyTicket from "../components/MyTicket";
@@ -10,8 +11,9 @@ import axios from "axios";
 
 const Mypage = () => {
   const [activeTab, setActiveTab] = useState(1);
-  const { account, getbalance } = useContext(AppContext);
+  const { account, getbalance , mynft, mytoken} = useContext(AppContext);
   const [data, setData] = useState();
+  const [use_t , setuse_t] = useState(0) ;
 
   const handleTabClick = (tabIndex) => {
     setActiveTab(tabIndex);
@@ -19,6 +21,7 @@ const Mypage = () => {
 
   const get_nft_data = async () => {
     try {
+      if( account ) {
       const response = await axios.get(
         `${process.env.REACT_APP_BACKEND_URL}/nft/${account.address}`,
         {
@@ -28,19 +31,27 @@ const Mypage = () => {
         }
       );
 
-      setData(response.data);
+      let c = 0 ;
+      response.data.map( (v,i) => {
+        if( v.isUsed === true ) c ++ ;
+      })
+
+      setuse_t( c ) ;
+      setData(response.data) ;
+      console.log(response.data);
+    }
     } catch (error) {
       console.error(error);
     }
   };
 
-  useEffect(() => {
+  const navigate = useNavigate() ;
+  useEffect( () => {
+    if( !account ) {
+      navigate("/");
+    }
     get_nft_data();
-  }, []);
-
-  useEffect(() => {
-    console.log(data);
-  }, [data]);
+  } , [] );
 
   return (
     <>
@@ -87,18 +98,21 @@ const Mypage = () => {
                 <div class="container">
                   <div class="user-info">
                     <div class="user-box">
-                      <h4>User Name</h4>
-                      <p>010-1234-1234</p>
+                      <h4>{account.name}</h4>
                     </div>
                   </div>
                   <div class="tokens-tickets">
                     <div class="token-container">
                       <h5>My 토큰</h5>
-                      <p>0</p>
+                      <p>{mytoken}</p>
                     </div>
                     <div class="ticket-container">
-                      <h5>My 티켓</h5>
-                      <p>0</p>
+                      <h5>미사용 티켓</h5>
+                      <p>{mynft-use_t}</p>
+                    </div>
+                    <div class="token-container">
+                      <h5>사용 티켓</h5>
+                      <p>{use_t}</p>
                     </div>
                   </div>
                   <div>
